@@ -15,10 +15,10 @@ public class Main{
 
     static String[] files = {
 	///"anamprphs.csv",  
-	///"author_lookup.csv",  
+	"author_lookup.csv",  
 	///"higher_taxa.csv",  
-	///"host_pathogens.csv",  
-	///"hosts.csv",  
+	"host_pathogens.csv",  
+	"hosts.csv",  
 	//"hp_locality_links.csv",  
 	///"localities.csv",  
 	"pathogens.csv",
@@ -33,11 +33,27 @@ public class Main{
     public static final void main(final String[] args) {
 	System.out.println("hello");
 	Loader loader = new Loader();
+	IndexDumper idmp = new IndexDumper();
+	Builder builder = null;
 	for(String file: files){
 	    System.out.println("------------------------------------------------------");
+	    switch(file){
+	    case "pathogens.csv":
+		builder = new PathogenBuilder();
+		break;
+	    case "hosts.csv":
+		builder = new HostBuilder();
+		break;
+	    case "author_lookup.csv":
+		builder = new AuthorBuilder();
+		break;
+	    }
 	    CSVParser parser = fileReader(file);
-	    loader.index(parser, file);
+	    loader.index(parser, file, builder);
 	    System.out.println(file);
+	    System.out.println("------------------------------------------------------");
+	    //idmp.dump(Util.makeIndexName(file));
+	    idmp.count(Util.makeIndexName(file));
 	}
 
 	
