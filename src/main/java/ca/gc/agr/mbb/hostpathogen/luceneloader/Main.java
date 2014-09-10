@@ -16,14 +16,14 @@ public class Main{
     static String[] files = {
 	///"anamprphs.csv",  
 	"author_lookup.csv",  
-	///"higher_taxa.csv",  
+	"higher_taxa.csv",  
 	"host_pathogens.csv",  
 	"hosts.csv",  
 	//"hp_locality_links.csv",  
-	///"localities.csv",  
+	"localities.csv",  
 	"pathogens.csv",
-	///"references.csv",
-	///"ref_sources.csv"
+	"references.csv",
+	"ref_sources.csv"
 	// "SBML_phcitq_temp.csv",
 	//	"Switchboard_Items.csv",
 	//	"tblLinkedFiles.csv",
@@ -38,15 +38,33 @@ public class Main{
 	for(String file: files){
 	    System.out.println("------------------------------------------------------");
 	    switch(file){
-	    case "pathogens.csv":
-		builder = new PathogenBuilder();
-		break;
-	    case "hosts.csv":
-		builder = new HostBuilder();
-		break;
 	    case "author_lookup.csv":
 		builder = new AuthorBuilder();
 		break;
+	    case "higher_taxa.csv":
+		builder = new HigherTaxaBuilder();
+		break;
+
+	    case "hosts.csv":
+		builder = new HostBuilder();
+		break;
+
+	    case "host_pathogens.csv":
+		builder = new HostPathogenBuilder();
+		break;
+
+	    case "pathogens.csv":
+		builder = new PathogenBuilder();
+		break;
+
+	    case "references.csv":
+		builder = new ReferenceBuilder();
+		break;
+
+	    case "ref_sources.csv":
+		builder = new ReferenceSourceBuilder();
+		break;
+
 	    }
 	    CSVParser parser = fileReader(file);
 	    loader.index(parser, file, builder);
