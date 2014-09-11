@@ -1,5 +1,5 @@
 
-package ca.gc.agr.mbb.hostpathogen.hostPathogenLuceneLoader;
+package ca.gc.agr.mbb.hostpathogen.hostpathogenluceneloader;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;

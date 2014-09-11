@@ -1,4 +1,4 @@
-package ca.gc.agr.mbb.hostpathogen.hostPathogenLuceneLoader;
+package ca.gc.agr.mbb.hostpathogen.hostpathogenluceneloader;
 
 import java.io.File;
 import org.apache.lucene.index.IndexReader;
