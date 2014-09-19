@@ -11,6 +11,10 @@ public class LocalityBuilder extends Builder{
 	COUNTRY,
     };
 
+    public LocalityBuilder(final String csvFilename){
+	super(csvFilename);
+    }
+
     @Override
     public void init(){
 	objectFields = LOCALITY_FIELDS;

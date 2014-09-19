@@ -20,4 +20,8 @@ public class HostPathogenBuilder extends Builder{
 	objectFields = HOST_PATHOGEN_FIELDS;
     }
 
+    public HostPathogenBuilder(final String csvFilename){
+	super(csvFilename);
+    }
+
 }

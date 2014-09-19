@@ -18,7 +18,11 @@ abstract public class Builder implements DocumentBuilder{
     protected List<String> fields;
 
     protected String[] objectFields;
+    String csvFilename;
 
+    public Builder(final String csvFilename){
+	this.csvFilename = csvFilename;
+    }
 
     @Override
     final public Document makeDocument(final CSVRecord record){

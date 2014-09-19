@@ -22,4 +22,8 @@ public class ReferenceSourceBuilder extends Builder{
 	objectFields = REF_SOURCE_FIELDS;
     }
 
+    public ReferenceSourceBuilder(final String csvFilename){
+	super(csvFilename);
+    }
+
 }

@@ -21,6 +21,10 @@ public class PathogenBuilder extends Builder{
 	VIRUS_MPLO_NAMES
     };
 
+    public PathogenBuilder(final String csvFilename){
+	super(csvFilename);
+    }
+
     @Override
     public void init(){
 	objectFields = PATHOGEN_FIELDS;

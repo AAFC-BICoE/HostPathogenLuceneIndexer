@@ -18,4 +18,10 @@ public class ReferenceBuilder extends Builder{
 	objectFields = REFERENCE_FIELDS;
     }
 
+
+    public ReferenceBuilder(final String csvFilename){
+	super(csvFilename);
+    }
+
+
 }

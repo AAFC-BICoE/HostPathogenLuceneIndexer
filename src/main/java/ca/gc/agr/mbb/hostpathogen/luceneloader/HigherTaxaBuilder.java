@@ -18,4 +18,8 @@ public class HigherTaxaBuilder extends Builder{
 	objectFields = HIGHER_TAXA_FIELDS;
     }
 
+    public HigherTaxaBuilder(final String csvFilename){
+	super(csvFilename);
+    }
+
 }

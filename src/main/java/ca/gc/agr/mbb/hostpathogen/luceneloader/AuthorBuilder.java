@@ -8,10 +8,17 @@ import java.util.ArrayList;
 
 public class AuthorBuilder extends Builder{
 
+
+
     public static final String[] AUTHOR_FIELDS={
 	LOOKUP_AUTHOR,
 	PK_AUTHOR_LOOKUP_ID,
     };
+
+
+    public AuthorBuilder(final String csvFilename){
+	super(csvFilename);
+    }
 
     @Override
     public void init(){

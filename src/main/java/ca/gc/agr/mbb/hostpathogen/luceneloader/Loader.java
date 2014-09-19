@@ -22,6 +22,11 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
 public class Loader{
+    String luceneIndexDir = null;
+    public Loader(final String luceneIndexDir){
+	this.luceneIndexDir = luceneIndexDir;
+    }
+
     public void index(CSVParser parser, String filename, Builder pb){
 	Map<String,Integer> headers = parser.getHeaderMap();
 	Directory dir = null;
@@ -32,7 +37,7 @@ public class Loader{
 	try{
 
 	    try{
-		dir = FSDirectory.open(new File(Util.makeIndexName(filename)));
+		dir = FSDirectory.open(new File(luceneIndexDir + "/" + Util.makeIndexName(filename)));
 		analyzer = new StandardAnalyzer(Version.LUCENE_4_10_0);
 
 		iwc = new IndexWriterConfig(Version.LUCENE_4_10_0, analyzer);

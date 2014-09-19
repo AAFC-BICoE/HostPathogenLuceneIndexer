@@ -20,6 +20,10 @@ public class HostBuilder extends Builder{
 	PK_HOST_ID
     };
 
+    public HostBuilder(final String csvFilename){
+	super(csvFilename);
+    }
+
     @Override
     public void init(){
 	objectFields = HOST_FIELDS;

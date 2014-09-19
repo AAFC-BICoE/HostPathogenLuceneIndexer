@@ -17,6 +17,10 @@ public class Anamorph extends Builder{
     }
     */
 
+    public Anamorph(final String csvFilename){
+	super(csvFilename);
+    }
+
     public void init(){
 
     }
