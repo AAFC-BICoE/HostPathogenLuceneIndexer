@@ -27,6 +27,8 @@ public class HostBuilder extends Builder{
     @Override
     public void init(){
 	objectFields = HOST_FIELDS;
+	primaryKeyField = PK_HOST_ID;
+	recordType = HOST_TYPE;
     }
 
 }

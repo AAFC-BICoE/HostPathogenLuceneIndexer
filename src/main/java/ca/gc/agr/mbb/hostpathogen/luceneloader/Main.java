@@ -68,7 +68,6 @@ public class Main{
 	    }
 	    loader.index(parser, csvFile, builder);
 	    System.out.println(csvFile);
-	    System.out.println("------------------------------------------------------");
 	    //idmp.dump(Util.makeIndexName(file));
 	    idmp.count(indexWriterDir + "/" + Util.makeIndexName(csvFile));
 	}

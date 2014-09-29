@@ -8,6 +8,9 @@ import org.apache.commons.csv.CSVParser;
 import java.util.Map;
 import java.io.File;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -22,6 +25,7 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
 public class Loader{
+    private final static Logger LOG = Logger.getLogger(Loader.class.getName()); 
     String luceneIndexDir = null;
     public Loader(final String luceneIndexDir){
 	this.luceneIndexDir = luceneIndexDir;
@@ -50,14 +54,15 @@ public class Loader{
 	    }
 
 	    int count = 0;
+	    LOG.info("Filename csv=" + filename);
 	    for (CSVRecord record : parser) {
 		count++;
 		//System.out.println("---");
 		Document doc = null;
-		if(filename == "pathogens.csv"){
+
+		if(filename == "pathogens.csv" || filename == "hosts.csv"){
 		    doc = pb.makeDocument(record);
 		}else{
-
 		    doc = new Document();
 		    for(String fieldName: headers.keySet()){
 			String value = record.get(fieldName);
@@ -81,7 +86,6 @@ public class Loader{
 		    }
 		}
 		try{
-		    //System.out.println(doc);
 		    writer.addDocument(doc);
 		}catch(Exception e){
 		    e.printStackTrace();
@@ -91,6 +95,7 @@ public class Loader{
 	}
 	finally{
 	    try{
+		System.err.println("Closing index for: " + filename);
 		writer.close();
 	    }catch(Exception e){
 		e.printStackTrace();

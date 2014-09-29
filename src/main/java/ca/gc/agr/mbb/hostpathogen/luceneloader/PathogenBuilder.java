@@ -28,6 +28,8 @@ public class PathogenBuilder extends Builder{
     @Override
     public void init(){
 	objectFields = PATHOGEN_FIELDS;
+	primaryKeyField = PK;
+	recordType = PATHOGEN_TYPE;
     }
 
 
