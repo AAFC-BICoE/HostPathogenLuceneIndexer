@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.ArrayList;
 import org.apache.commons.csv.CSVRecord;
 
-
+import ca.gc.agr.mbb.hostpathogen.hostpathogenlucenesearcher.UtilLucene;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.LongField;
 import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.StoredField;
 import org.apache.lucene.document.Field;
 
 import java.util.logging.Level;
@@ -61,11 +62,14 @@ abstract public class Builder implements DocumentBuilder{
 	    }else{
 		indexFieldName = fieldName;
 	    }
-
-	    doc.add(new StringField(indexFieldName, value, Field.Store.YES));
-	    
+	    indexAndStore(doc, indexFieldName, value);
 	}
 	return doc;
+    }
+
+    private void indexAndStore(final Document doc, final String baseFieldName, String fieldValue){
+	doc.add(new StoredField(UtilLucene.storedName(baseFieldName), fieldValue));
+	doc.add(new StringField(baseFieldName, fieldValue.toLowerCase(), Field.Store.NO));
     }
 
     private void initFields(){

@@ -55,6 +55,10 @@ public class Loader{
 
 	    int count = 0;
 	    LOG.info("Filename csv=" + filename);
+	    if(filename == "pathogens.csv" || filename == "hosts.csv"){
+		LOG.info("SPECIAL");
+	    }
+
 	    for (CSVRecord record : parser) {
 		count++;
 		//System.out.println("---");
