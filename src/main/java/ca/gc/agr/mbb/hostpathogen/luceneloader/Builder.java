@@ -49,6 +49,9 @@ abstract public class Builder implements DocumentBuilder{
 	doc.add(new StringField(RECORD_TYPE, recordType, Field.Store.YES));
 
 	String indexFieldName = null;
+
+	StringBuilder allContent = new StringBuilder(200);
+
 	for(String fieldName: fields){
 	    String value = record.get(fieldName);
 
@@ -70,6 +73,7 @@ abstract public class Builder implements DocumentBuilder{
     private void indexAndStore(final Document doc, final String baseFieldName, String fieldValue){
 	doc.add(new StoredField(UtilLucene.storedName(baseFieldName), fieldValue));
 	doc.add(new StringField(baseFieldName, fieldValue.toLowerCase(), Field.Store.NO));
+	//doc.add(new StringField(baseFieldName, fieldValue.toLowerCase(), Field.Store.YES));
     }
 
     private void initFields(){

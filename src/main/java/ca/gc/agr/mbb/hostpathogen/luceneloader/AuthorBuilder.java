@@ -23,6 +23,8 @@ public class AuthorBuilder extends Builder{
     @Override
     public void init(){
 	objectFields = AUTHOR_FIELDS;
+	primaryKeyField = PK_AUTHOR_LOOKUP_ID;
+	recordType = AUTHOR_TYPE;
     }
 
 

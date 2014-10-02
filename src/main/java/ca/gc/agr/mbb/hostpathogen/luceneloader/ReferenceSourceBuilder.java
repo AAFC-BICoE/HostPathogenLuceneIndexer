@@ -20,6 +20,8 @@ public class ReferenceSourceBuilder extends Builder{
     @Override
     public void init(){
 	objectFields = REF_SOURCE_FIELDS;
+	primaryKeyField = PK_REF_SOURCE_ID;
+	recordType = REF_SOURCES_TYPE;
     }
 
     public ReferenceSourceBuilder(final String csvFilename){

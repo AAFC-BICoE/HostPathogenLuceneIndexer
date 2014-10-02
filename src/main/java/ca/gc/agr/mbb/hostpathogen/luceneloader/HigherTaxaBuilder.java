@@ -20,6 +20,8 @@ public class HigherTaxaBuilder extends Builder{
 
     public HigherTaxaBuilder(final String csvFilename){
 	super(csvFilename);
+	primaryKeyField = PK_HIGHER_TAXA_ID;
+	recordType = HIGHER_TAXA_TYPE;
     }
 
 }

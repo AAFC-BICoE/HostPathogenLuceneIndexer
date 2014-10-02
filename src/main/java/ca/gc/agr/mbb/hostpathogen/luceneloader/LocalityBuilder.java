@@ -18,6 +18,8 @@ public class LocalityBuilder extends Builder{
     @Override
     public void init(){
 	objectFields = LOCALITY_FIELDS;
+	primaryKeyField = PK_LOCATION_ID;
+	recordType = LOCALITY_TYPE;
     }
 
 }

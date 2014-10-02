@@ -64,9 +64,10 @@ public class Loader{
 		//System.out.println("---");
 		Document doc = null;
 
-		if(filename == "pathogens.csv" || filename == "hosts.csv"){
+		if(pb != null){
 		    doc = pb.makeDocument(record);
 		}else{
+		    /*
 		    doc = new Document();
 		    for(String fieldName: headers.keySet()){
 			String value = record.get(fieldName);
@@ -88,6 +89,7 @@ public class Loader{
 			}
 			//System.out.println(fieldName + ":" + record.get(fieldName));
 		    }
+		    */
 		}
 		try{
 		    writer.addDocument(doc);

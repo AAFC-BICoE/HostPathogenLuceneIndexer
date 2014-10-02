@@ -18,6 +18,8 @@ public class HostPathogenBuilder extends Builder{
     @Override
     public void init(){
 	objectFields = HOST_PATHOGEN_FIELDS;
+	primaryKeyField = PK_HOST_PATHOGEN_ID;
+	recordType = HOST_PATHOGEN_TYPE;
     }
 
     public HostPathogenBuilder(final String csvFilename){
