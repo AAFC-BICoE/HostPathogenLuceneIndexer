@@ -7,6 +7,7 @@ import ca.gc.agr.mbb.hostpathogen.hostpathogenlucenesearcher.LuceneFields;
 
 public interface DocumentBuilder extends LuceneFields{
     Document makeDocument(CSVRecord record);
+    void afterMakeDocument(Document doc);
     void init();
 
 

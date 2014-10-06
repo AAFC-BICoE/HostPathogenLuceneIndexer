@@ -33,8 +33,7 @@ abstract public class Builder implements DocumentBuilder{
 
     @Override
     final public Document makeDocument(final CSVRecord record){
-	init();
-	initFields();
+
 	if (primaryKeyField == null){
 	    throw new NullPointerException("primaryKeyField is null");
 	}
@@ -67,7 +66,12 @@ abstract public class Builder implements DocumentBuilder{
 	    }
 	    indexAndStore(doc, indexFieldName, value);
 	}
+	afterMakeDocument(doc);
 	return doc;
+    }
+
+    public void afterMakeDocument(final Document doc){
+	//LOG.info("afterMakeDocument not implemented");
     }
 
     private void indexAndStore(final Document doc, final String baseFieldName, String fieldValue){
@@ -76,7 +80,7 @@ abstract public class Builder implements DocumentBuilder{
 	//doc.add(new StringField(baseFieldName, fieldValue.toLowerCase(), Field.Store.YES));
     }
 
-    private void initFields(){
+    protected void initFields(){
 	fields = new ArrayList<String>(objectFields.length);
 	for(String field: objectFields){
 	    fields.add(field);

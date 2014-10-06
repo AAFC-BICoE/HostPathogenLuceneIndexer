@@ -38,27 +38,29 @@ public class Loader{
 	IndexWriterConfig iwc = null;
 	IndexWriter writer = null;
 
+	pb.init();
+	pb.initFields();
+
+
 	try{
-
-	    try{
-		dir = FSDirectory.open(new File(luceneIndexDir + "/" + Util.makeIndexName(filename)));
-		analyzer = new StandardAnalyzer(Version.LUCENE_4_10_0);
-
-		iwc = new IndexWriterConfig(Version.LUCENE_4_10_0, analyzer);
-		iwc.setOpenMode(OpenMode.CREATE);
-
-		writer = new IndexWriter(dir, iwc);
-	    }catch(Exception e){
-		e.printStackTrace();
-		return;
-	    }
-
+	    dir = FSDirectory.open(new File(luceneIndexDir + "/" + Util.makeIndexName(filename)));
+	    analyzer = new StandardAnalyzer(Version.LUCENE_4_10_0);
+	    
+	    iwc = new IndexWriterConfig(Version.LUCENE_4_10_0, analyzer);
+	    iwc.setOpenMode(OpenMode.CREATE);
+	    
+	    writer = new IndexWriter(dir, iwc);
+	}catch(Exception e){
+	    e.printStackTrace();
+	    return;
+	}
+	try{
 	    int count = 0;
 	    LOG.info("Filename csv=" + filename);
 	    if(filename == "pathogens.csv" || filename == "hosts.csv"){
 		LOG.info("SPECIAL");
 	    }
-
+	    
 	    for (CSVRecord record : parser) {
 		count++;
 		//System.out.println("---");
@@ -66,30 +68,6 @@ public class Loader{
 
 		if(pb != null){
 		    doc = pb.makeDocument(record);
-		}else{
-		    /*
-		    doc = new Document();
-		    for(String fieldName: headers.keySet()){
-			String value = record.get(fieldName);
-			if(value == null || value.length() == 0){
-			    continue;
-			}
-			if(fieldName.endsWith("id")){
-			    try{
-				doc.add(new LongField(fieldName, Long.parseLong(value), Field.Store.YES));
-			    }catch(Throwable e){
-				System.err.println(filename);
-				System.err.println(fieldName);
-				System.err.println(count);
-				e.printStackTrace();
-				return;
-			    }
-			}else{
-			    doc.add(new StringField(fieldName, record.get(fieldName), Field.Store.YES));
-			}
-			//System.out.println(fieldName + ":" + record.get(fieldName));
-		    }
-		    */
 		}
 		try{
 		    writer.addDocument(doc);

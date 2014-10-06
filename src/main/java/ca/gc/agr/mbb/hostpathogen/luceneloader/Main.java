@@ -44,7 +44,7 @@ public class Main{
 	String csvDir = args[0];
 	String indexWriterDir = args[1];
 	Map<String, Builder>builderMap = new HashMap<String, Builder>();
-	init(builderMap);
+	init(builderMap, csvDir);
 	Loader loader = new Loader(indexWriterDir);
 	IndexDumper idmp = new IndexDumper();
 
@@ -86,14 +86,14 @@ public class Main{
     }
 
 
-    public static void init(Map<String, Builder> bm){
+    public static void init(final Map<String, Builder> bm, final String csvDir){
  	if (bm == null){
 		throw new NullPointerException("mapBuilder is null");
 	    }
 	bm.put(AUTHOR_FILE, new AuthorBuilder(AUTHOR_FILE));
 	bm.put(HIGHER_TAXA_FILE, new HigherTaxaBuilder(HIGHER_TAXA_FILE));
 	bm.put(HOSTS_FILE, new HostBuilder(HOSTS_FILE));
-	bm.put(HOST_PATHOGENS_FILE, new HostPathogenBuilder(HOST_PATHOGENS_FILE));
+	bm.put(HOST_PATHOGENS_FILE, new HostPathogenBuilder(HOST_PATHOGENS_FILE, HOSTS_FILE, PATHOGENS_FILE, csvDir));
 	bm.put(LOCALITIES_FILE, new LocalityBuilder(LOCALITIES_FILE));
 	bm.put(PATHOGENS_FILE, new PathogenBuilder(PATHOGENS_FILE));
 	bm.put(REFERENCES_FILE,new ReferenceBuilder(REFERENCES_FILE));
