@@ -1,7 +1,7 @@
 package ca.gc.agr.mbb.hostpathogen.hostpathogenluceneloader;
 
 
-
+import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 import java.lang.Iterable;
@@ -12,6 +12,14 @@ import java.util.HashMap;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.util.Version;
+import org.apache.lucene.index.IndexWriter;
 
 public class Main{
 
@@ -20,6 +28,7 @@ public class Main{
     static final String HOSTS_FILE = "hosts.csv";
     static final String HOST_PATHOGENS_FILE = "host_pathogens.csv";
     static final String LOCALITIES_FILE = "localities.csv";
+    static final String HP_LOCALITIES_JOIN_FILE = "hp_locality_links.csv";
     static final String PATHOGENS_FILE = "pathogens.csv";
     static final String REFERENCES_FILE = "references.csv";
     static final String REF_SOURCES_FILE = "ref_sources.csv";
@@ -27,6 +36,7 @@ public class Main{
     static final String[] csvFiles = {
 	AUTHOR_FILE,
 	HIGHER_TAXA_FILE,
+	//HP_LOCALITIES_JOIN_FILE,
 	REFERENCES_FILE,
 	REF_SOURCES_FILE,
 	HOSTS_FILE,
@@ -40,37 +50,65 @@ public class Main{
 	    usage();
 	    System.exit(42);
 	}
-
+	
 	String csvDir = args[0];
 	String indexWriterDir = args[1];
 	Map<String, Builder>builderMap = new HashMap<String, Builder>();
 	init(builderMap, csvDir);
-	Loader loader = new Loader(indexWriterDir);
-	IndexDumper idmp = new IndexDumper();
+	Loader loader = new Loader();
 
-	for(String csvFile: csvFiles){
-	    if (!builderMap.containsKey(csvFile)){
-		System.err.println("File not in builder map: " + csvFile);
-		System.exit(42);
-	    }
-	    Builder builder = builderMap.get(csvFile);
-
-	    CSVParser parser = null;
-	    try{
-		parser = fileReader(csvDir, csvFile);
-	    }catch(java.io.FileNotFoundException e){
-		e.printStackTrace();
-		System.err.println("Unable to find file: " + csvDir + "/" + csvFile);
-		System.exit(42);
-	    }catch(java.io.IOException e){
-		e.printStackTrace();
-		System.exit(42);
-	    }
-	    loader.index(parser, csvFile, builder);
-	    System.out.println(csvFile);
-	    //idmp.dump(Util.makeIndexName(file));
-	    idmp.count(indexWriterDir + "/" + Util.makeIndexName(csvFile));
+	Directory dir = null;
+	Analyzer analyzer = null;
+	IndexWriterConfig iwc = null;
+	IndexWriter writer = null;
+	final String indexName = indexWriterDir + "/" + "HPLuceneIndex";
+	try{
+	    dir = FSDirectory.open(new File(indexName));
+	    analyzer = new StandardAnalyzer(Version.LUCENE_4_10_0);
+	    
+	    iwc = new IndexWriterConfig(Version.LUCENE_4_10_0, analyzer);
+	    iwc.setOpenMode(OpenMode.CREATE);
+	    
+	    writer = new IndexWriter(dir, iwc);
+	}catch(Exception e){
+	    e.printStackTrace();
+	    return;
 	}
+	try{
+	    for(String csvFile: csvFiles){
+		if (!builderMap.containsKey(csvFile)){
+		    System.err.println("File not in builder map: " + csvFile);
+		    System.exit(42);
+		}
+		Builder builder = builderMap.get(csvFile);
+
+		CSVParser parser = null;
+		try{
+		    parser = fileReader(csvDir, csvFile);
+		}catch(java.io.FileNotFoundException e){
+		    e.printStackTrace();
+		    System.err.println("Unable to find file: " + csvDir + "/" + csvFile);
+		    System.exit(42);
+		}catch(java.io.IOException e){
+		    e.printStackTrace();
+		    System.exit(42);
+		}
+		loader.index(writer, parser, csvFile, builder);
+		System.out.println(csvFile);
+		//idmp.dump(Util.makeIndexName(file));
+		builder.close();
+	    }
+	}
+	finally{
+	    try{
+		System.err.println("Closing index ");
+		writer.close();
+	    }catch(Exception e){
+		e.printStackTrace();
+	    }
+	}
+	IndexDumper idmp = new IndexDumper();
+	idmp.count(indexName);
     }
 
     public static void usage(){

@@ -9,6 +9,7 @@ public interface DocumentBuilder extends LuceneFields{
     Document makeDocument(CSVRecord record);
     void afterMakeDocument(Document doc);
     void init();
+    void close();
 
 
 

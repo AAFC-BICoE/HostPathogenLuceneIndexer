@@ -70,10 +70,15 @@ abstract public class Builder implements DocumentBuilder{
 	return doc;
     }
 
+    int counter = 0;
     public void afterMakeDocument(final Document doc){
 	//LOG.info("afterMakeDocument not implemented");
+	++counter;
     }
 
+    public void close(){
+	System.err.println("Added records=" + counter);
+    }
     private void indexAndStore(final Document doc, final String baseFieldName, String fieldValue){
 	doc.add(new StoredField(UtilLucene.storedName(baseFieldName), fieldValue));
 	doc.add(new StringField(baseFieldName, fieldValue.toLowerCase(), Field.Store.NO));
