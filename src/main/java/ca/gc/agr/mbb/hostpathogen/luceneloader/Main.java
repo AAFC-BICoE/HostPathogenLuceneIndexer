@@ -34,14 +34,14 @@ public class Main{
     static final String REF_SOURCES_FILE = "ref_sources.csv";
 
     static final String[] csvFiles = {
-	AUTHOR_FILE,
-	HIGHER_TAXA_FILE,
-	//HP_LOCALITIES_JOIN_FILE,
-	REFERENCES_FILE,
-	REF_SOURCES_FILE,
-	HOSTS_FILE,
-	PATHOGENS_FILE,
-	HOST_PATHOGENS_FILE,
+	AUTHOR_FILE,         // 4728
+	HIGHER_TAXA_FILE,    // 300
+	//HP_LOCALITIES_JOIN_FILE, // 140113
+	REFERENCES_FILE,     // 8744
+	REF_SOURCES_FILE,    // 486
+	HOSTS_FILE,          // 6657
+	PATHOGENS_FILE,      // 13556
+	HOST_PATHOGENS_FILE, // 121349
     };
 
 
@@ -74,8 +74,10 @@ public class Main{
 	    e.printStackTrace();
 	    return;
 	}
+
 	try{
 	    for(String csvFile: csvFiles){
+		System.err.println("IndexWriter: " + writer);
 		if (!builderMap.containsKey(csvFile)){
 		    System.err.println("File not in builder map: " + csvFile);
 		    System.exit(42);
@@ -96,6 +98,11 @@ public class Main{
 		loader.index(writer, parser, csvFile, builder);
 		System.out.println(csvFile);
 		//idmp.dump(Util.makeIndexName(file));
+		try{
+		    writer.commit();
+		}catch(java.io.IOException e){
+		    e.printStackTrace();
+		}
 		builder.close();
 	    }
 	}
