@@ -1,5 +1,6 @@
 package ca.gc.agr.mbb.hostpathogen.hostpathogenluceneloader;
 
+import ca.gc.agr.mbb.hostpathogen.hostpathogenlucenesearcher.UtilLucene;
 
 import java.io.File;
 import java.io.FileReader;
@@ -13,12 +14,6 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.index.IndexWriterConfig.OpenMode;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Version;
 import org.apache.lucene.index.IndexWriter;
 
 public class Main{
@@ -57,19 +52,12 @@ public class Main{
 	init(builderMap, csvDir);
 	Loader loader = new Loader();
 
-	Directory dir = null;
 	Analyzer analyzer = null;
-	IndexWriterConfig iwc = null;
 	IndexWriter writer = null;
-	final String indexName = indexWriterDir + "/" + "HPLuceneIndex";
+	final String indexDir = indexWriterDir + "/" + "HPLuceneIndex";
 	try{
-	    dir = FSDirectory.open(new File(indexName));
-	    analyzer = new StandardAnalyzer(Version.LUCENE_4_10_0);
-	    
-	    iwc = new IndexWriterConfig(Version.LUCENE_4_10_0, analyzer);
-	    iwc.setOpenMode(OpenMode.CREATE);
-	    
-	    writer = new IndexWriter(dir, iwc);
+	    analyzer = UtilLucene.makeAnalyzer();
+	    writer = UtilLucene.makeIndexWriter(indexDir, analyzer);
 	}catch(Exception e){
 	    e.printStackTrace();
 	    return;
@@ -115,7 +103,7 @@ public class Main{
 	    }
 	}
 	IndexDumper idmp = new IndexDumper();
-	idmp.count(indexName);
+	idmp.count(indexDir);
     }
 
     public static void usage(){

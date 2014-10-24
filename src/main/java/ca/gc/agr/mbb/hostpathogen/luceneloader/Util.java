@@ -9,4 +9,5 @@ public final class Util{
 	return "luceneIndex." + base.replaceAll(SUFFIX, "");
     }
 
+    
 }
