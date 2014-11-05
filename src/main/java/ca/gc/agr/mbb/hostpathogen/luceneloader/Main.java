@@ -31,7 +31,7 @@ public class Main{
     static final String[] csvFiles = {
 	AUTHOR_FILE,         // 4728
 	HIGHER_TAXA_FILE,    // 300
-	//HP_LOCALITIES_JOIN_FILE, // 140113
+	HP_LOCALITIES_JOIN_FILE, // 140113
 	REFERENCES_FILE,     // 8744
 	REF_SOURCES_FILE,    // 486
 	HOSTS_FILE,          // 6657
@@ -131,6 +131,7 @@ public class Main{
 	bm.put(PATHOGENS_FILE, new PathogenBuilder(PATHOGENS_FILE));
 	bm.put(REFERENCES_FILE,new ReferenceBuilder(REFERENCES_FILE));
 	bm.put(REF_SOURCES_FILE, new ReferenceSourceBuilder(REF_SOURCES_FILE));
+	bm.put(HP_LOCALITIES_JOIN_FILE, new HPLocalityJoinBuilder(HP_LOCALITIES_JOIN_FILE));
     }
     
 }
