@@ -1,24 +1,17 @@
 
 package ca.gc.agr.mbb.hostpathogen.hostpathogenluceneloader;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVRecord;
-import org.apache.commons.csv.CSVParser;
-
 import java.util.Map;
-
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.LongField;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.index.IndexWriter;
-
-
 
 public class Loader{
     private final static Logger LOG = Logger.getLogger(Loader.class.getName()); 

@@ -1,15 +1,16 @@
 package ca.gc.agr.mbb.hostpathogen.hostpathogenluceneloader;
 
 import ca.gc.agr.mbb.hostpathogen.hostpathogenlucenesearcher.UtilLucene;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
 import java.lang.Iterable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Map;
+
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -59,6 +60,13 @@ public class Main{
 	    analyzer = UtilLucene.makeAnalyzer();
 	    writer = UtilLucene.makeIndexWriter(indexDir, analyzer);
 	}catch(Exception e){
+	    e.printStackTrace();
+	    return;
+	}
+
+	try{
+	    Util.saveTimeStampRecord(writer);
+	}catch(java.io.IOException e){
 	    e.printStackTrace();
 	    return;
 	}
@@ -133,5 +141,6 @@ public class Main{
 	bm.put(REF_SOURCES_FILE, new ReferenceSourceBuilder(REF_SOURCES_FILE));
 	bm.put(HP_LOCALITIES_JOIN_FILE, new HPLocalityJoinBuilder(HP_LOCALITIES_JOIN_FILE));
     }
-    
+
+
 }
