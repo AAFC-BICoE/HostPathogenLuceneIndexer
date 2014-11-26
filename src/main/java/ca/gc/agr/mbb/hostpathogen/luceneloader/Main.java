@@ -20,6 +20,7 @@ import org.apache.lucene.index.IndexWriter;
 public class Main{
 
     static final String AUTHOR_FILE = "author_lookup.csv";
+    static final String ANAMORPH_FILE = "anamprphs.csv";
     static final String HIGHER_TAXA_FILE = "higher_taxa.csv";  
     static final String HOSTS_FILE = "hosts.csv";
     static final String HOST_PATHOGENS_FILE = "host_pathogens.csv";
@@ -31,6 +32,7 @@ public class Main{
 
     static final String[] csvFiles = {
 	AUTHOR_FILE,         // 4728
+	ANAMORPH_FILE,
 	HIGHER_TAXA_FILE,    // 300
 	HP_LOCALITIES_JOIN_FILE, // 140113
 	REFERENCES_FILE,     // 8744
@@ -131,6 +133,7 @@ public class Main{
  	if (bm == null){
 		throw new NullPointerException("mapBuilder is null");
 	    }
+	bm.put(ANAMORPH_FILE, new AnamorphBuilder(ANAMORPH_FILE));
 	bm.put(AUTHOR_FILE, new AuthorBuilder(AUTHOR_FILE));
 	bm.put(HIGHER_TAXA_FILE, new HigherTaxaBuilder(HIGHER_TAXA_FILE));
 	bm.put(HOSTS_FILE, new HostBuilder(HOSTS_FILE));

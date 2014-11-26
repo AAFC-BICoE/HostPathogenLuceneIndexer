@@ -6,8 +6,8 @@ public class LocalityBuilder extends Builder{
 
     public static final String[] LOCALITY_FIELDS={
 	PK_LOCATION_ID,
-	GEOGRAPHICAL_ABBREVIATION,
-	INTERPRETATION,
+	PROVINCE_STATE_TERRITORY_ABBREVIATION,
+	PROVINCE_STATE_TERRITORY,
 	COUNTRY,
     };
 
