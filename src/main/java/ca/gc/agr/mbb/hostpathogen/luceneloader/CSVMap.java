@@ -2,25 +2,16 @@ package ca.gc.agr.mbb.hostpathogen.hostpathogenluceneloader;
 
 import org.apache.commons.csv.CSVRecord;
 import java.util.Map;
+import java.util.List;
 import java.util.HashMap;
 
-public class CSVMap{
+public interface CSVMap{
 
-    Map<String, CSVRecord>index = new HashMap<String, CSVRecord>();
+    public void setIndexKeyField(final String indexKeyField);
+    public void add(final CSVRecord record);
+    public CSVRecord get(final String key);
+    public List<CSVRecord> getAll(final String key);
 
-    String indexKeyField = null;
-
-    public void setIndexKeyField(final String indexKeyField){
-	this.indexKeyField = indexKeyField;
-    }
-
-    protected void add(final CSVRecord record){
-	index.put(record.get(indexKeyField), record);
-    }
-
-    public CSVRecord get(final String key){
-	return index.get(key);
-    }
     
 
 }

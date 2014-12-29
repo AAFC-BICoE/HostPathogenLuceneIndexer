@@ -1,21 +1,31 @@
 package ca.gc.agr.mbb.hostpathogen.hostpathogenluceneloader;
 
 import ca.gc.agr.mbb.hostpathogen.hostpathogenlucenesearcher.UtilLucene;
+import ca.gc.agr.mbb.hostpathogen.hostpathogenlucenesearcher.SearcherDao;
+import ca.gc.agr.mbb.hostpathogen.hostpathogenlucenesearcher.HPSearcher;
+import ca.gc.agr.mbb.hostpathogen.hostpathogenlucenesearcher.InitializationException;
+import ca.gc.agr.mbb.hostpathogen.nouns.HostPathogen;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.Reader;
+import java.io.IOException;
 import java.lang.Iterable;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.Properties;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.index.DirectoryReader;
 
 public class Main{
 
@@ -35,6 +45,7 @@ public class Main{
 	ANAMORPH_FILE,
 	HIGHER_TAXA_FILE,    // 300
 	HP_LOCALITIES_JOIN_FILE, // 140113
+	LOCALITIES_FILE,
 	REFERENCES_FILE,     // 8744
 	REF_SOURCES_FILE,    // 486
 	HOSTS_FILE,          // 6657
@@ -112,6 +123,14 @@ public class Main{
 		e.printStackTrace();
 	    }
 	}
+
+	try{
+	    makeHostPathogenSearchIndex(indexDir);
+	}catch(Exception e){
+	    e.printStackTrace();
+	    return;
+	}
+
 	IndexDumper idmp = new IndexDumper();
 	idmp.count(indexDir);
     }
@@ -137,7 +156,7 @@ public class Main{
 	bm.put(AUTHOR_FILE, new AuthorBuilder(AUTHOR_FILE));
 	bm.put(HIGHER_TAXA_FILE, new HigherTaxaBuilder(HIGHER_TAXA_FILE));
 	bm.put(HOSTS_FILE, new HostBuilder(HOSTS_FILE));
-	bm.put(HOST_PATHOGENS_FILE, new HostPathogenBuilder(HOST_PATHOGENS_FILE, HOSTS_FILE, PATHOGENS_FILE, csvDir));
+	bm.put(HOST_PATHOGENS_FILE, new HostPathogenBuilder(HOST_PATHOGENS_FILE, HOSTS_FILE, PATHOGENS_FILE, HP_LOCALITIES_JOIN_FILE, LOCALITIES_FILE, csvDir));
 	bm.put(LOCALITIES_FILE, new LocalityBuilder(LOCALITIES_FILE));
 	bm.put(PATHOGENS_FILE, new PathogenBuilder(PATHOGENS_FILE));
 	bm.put(REFERENCES_FILE,new ReferenceBuilder(REFERENCES_FILE));
@@ -145,5 +164,26 @@ public class Main{
 	bm.put(HP_LOCALITIES_JOIN_FILE, new HPLocalityJoinBuilder(HP_LOCALITIES_JOIN_FILE));
     }
 
+    public static void makeHostPathogenSearchIndex(String indexDir) throws IOException, InitializationException{
+
+	//SearcherDao<HostPathogen> searcher = new HPSearcher<HostPathogen>(HostPathogen.class);
+	//Properties p = new Properties();
+	//p.setProperty(SearcherDao.LUCENE_INDICES_BASE_DIR, indexDir);
+	//UtilLucene.luceneConfig("HostPathogen", p);
+
+	IndexReader reader = DirectoryReader.open(FSDirectory.open(new File(indexDir)));
+
+	// search for all HostPathogen doc types
+
+	// iterate through resultset
+	//  create HostPathogenFull from HostPathogen
+	//  get associated Host
+	//  get associated Pathogen
+	//  get associated Location
+	//  add to HostPathogenFull
+	//  add HostPathogenFull to index
+	// Flush index
+
+    }
 
 }

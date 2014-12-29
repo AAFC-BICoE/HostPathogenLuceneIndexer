@@ -10,7 +10,7 @@ import java.io.File;
 public class CSVMapLoader{
     private static final Logger LOG = Logger.getLogger(CSVMapLoader.class.getName());
 
-    public static final CSVMap load(final String csvDir, final String filename, final String indexKeyField){
+    public static final void load(final CSVMap index, final String csvDir, final String filename, final String indexKeyField){
 	CSVParser parser = null;
 	try{
 	    parser = Main.fileReader(csvDir, filename);
@@ -22,7 +22,6 @@ public class CSVMapLoader{
 	    e.printStackTrace();
 	    System.exit(42);
 	}
-	CSVMap index = new CSVMap();
 	index.setIndexKeyField(indexKeyField);
 
 	for (CSVRecord record : parser) {
@@ -30,7 +29,6 @@ public class CSVMapLoader{
 	    index.add(record);
 	    
 	}
-	return index;
     }
     
 }
