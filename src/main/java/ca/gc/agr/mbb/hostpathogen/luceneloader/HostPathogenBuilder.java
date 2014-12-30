@@ -1,6 +1,8 @@
 package ca.gc.agr.mbb.hostpathogen.hostpathogenluceneloader;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.csv.CSVRecord;
@@ -59,23 +61,42 @@ public class HostPathogenBuilder extends Builder{
     public void afterMakeDocument(final Document doc){
 
 	CSVRecord pathogen = pathogenMap.get(doc.getValues(FK_PATHOGEN_ID + STORED_SUFFIX)[0]);
-	System.out.println("HostPathogenBuilder.afterMakeDocument: " + pathogen);
-	System.out.println("HostPathogenBuilder.afterMakeDocument: pathogen.get(PATHOGEN_GENUS)" + pathogen.get(PATHOGEN_GENUS));
+	//System.out.println("HostPathogenBuilder.afterMakeDocument: " + pathogen);
+	//System.out.println("HostPathogenBuilder.afterMakeDocument: pathogen.get(PATHOGEN_GENUS)" + pathogen.get(PATHOGEN_GENUS));
 	doc.add(new StringField(PATHOGEN_GENUS, pathogen.get(PATHOGEN_GENUS), Field.Store.YES));
 	doc.add(new StringField(PATHOGEN_SPECIES, pathogen.get(PATHOGEN_SPECIES), Field.Store.YES));
 
 	CSVRecord host = hostMap.get(doc.getValues(FK_HOST_ID + STORED_SUFFIX)[0]);
-	System.out.println("HostPathogenBuilder.afterMakeDocument: " + host);
-	doc.add(new TextField(HOST_GENUS, host.get(HOST_GENUS), Field.Store.NO));
-	doc.add(new TextField(HOST_SPECIES, host.get(HOST_SPECIES), Field.Store.NO));
-	doc.add(new TextField(CULTIVAR, host.get(CULTIVAR), Field.Store.NO));
+	//System.out.println("HostPathogenBuilder.afterMakeDocument: " + host);
+	doc.add(new StringField(HOST_GENUS, host.get(HOST_GENUS), Field.Store.YES));
+	doc.add(new StringField(HOST_SPECIES, host.get(HOST_SPECIES), Field.Store.YES));
+	doc.add(new StringField(CULTIVAR, host.get(CULTIVAR), Field.Store.YES));
 
 
-	LOG.info(doc.toString());
-	CSVRecord hpJoin = hpLocalityLinksMap.get(doc.getValues(PK)[0]);
+	//LOG.info(doc.toString());
+	// Get all the locality join records with fk_host_pathogen_id = HostPathogen.ID
+	List<CSVRecord> hpJoin = hpLocalityLinksMap.getAll(doc.getValues(PK)[0]);
+	//System.err.println(doc.getValues(PK)[0]);
+	//System.err.println("Lenght of join=" + hpJoin.size());
+	if (hpJoin != null){
+	    // Only store/index unique countries
+	    Set<String> countrySet = new HashSet<String>(3);
+		for(CSVRecord r: hpJoin){
+		    //System.err.println(r);
+		    CSVRecord locality = localityMap.get(r.get(FK_LOCATION_ID));
+		    //System.err.println("\t" + locality);
 
+		    String country = locality.get(COUNTRY);
+		    if (!countrySet.contains(country)){
+			doc.add(new StringField(COUNTRY, country, Field.Store.YES));
+			countrySet.add(country);
+		    }
+		    doc.add(new StringField(PK_LOCATION_ID, locality.get(PK_LOCATION_ID), Field.Store.YES));
+		    doc.add(new StringField(PROVINCE_STATE_TERRITORY_ABBREVIATION, locality.get(PROVINCE_STATE_TERRITORY_ABBREVIATION), Field.Store.YES));
+		    doc.add(new StringField(PROVINCE_STATE_TERRITORY, locality.get(PROVINCE_STATE_TERRITORY), Field.Store.YES));
 
-
+		}
+	    }
     }
 
 }

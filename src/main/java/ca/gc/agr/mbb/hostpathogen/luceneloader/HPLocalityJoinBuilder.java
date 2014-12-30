@@ -17,7 +17,11 @@ public class HPLocalityJoinBuilder extends Builder{
     @Override
     public void init(){
 	objectFields = HP_LOCALITY_JOIN_FIELDS;
-	primaryKeyField = HPLocalityJoin.PK_LOCALITY_LINK_ID;
+
+	//primaryKeyField = HPLocalityJoin.PK_LOCALITY_LINK_ID;
+	// We do look ups based on FK_HOST_PATHOGEN_ID
+	primaryKeyField = FK_HOST_PATHOGEN_ID;
+
 	recordType = HP_LOCALITY_JOIN_TYPE;
     }
 
