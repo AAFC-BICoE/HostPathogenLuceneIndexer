@@ -1,3 +1,5 @@
+⛔️ This project is now archived - No Maintenance Intended
+
 HostPathogenLuceneIndexer
 =========================
 
